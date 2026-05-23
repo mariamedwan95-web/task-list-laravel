@@ -71,16 +71,34 @@
     <h2>Task List</h2>
 
     <div class="card">
+    @if(isset($task))
+        <div class="card-header">Update Task</div>
+        <div class="card-body">
+            <form method="POST" action="/update">
+                @csrf
+
+                <input type="hidden" name="id" value="{{ $task->id }}">
+
+                <label>Task</label>
+                <input type="text" name="name" value="{{ $task->name }}" required>
+
+                <button class="btn-add" type="submit">Update Task</button>
+            </form>
+        </div>
+    @else
         <div class="card-header">New Task</div>
         <div class="card-body">
             <form method="POST" action="/tasks">
                 @csrf
+
                 <label>Task</label>
                 <input type="text" name="name" required>
+
                 <button class="btn-add" type="submit">+ Add Task</button>
             </form>
         </div>
-    </div>
+    @endif
+</div>
 
     <div class="card">
         <div class="card-header">Current Tasks</div>
@@ -95,10 +113,14 @@
                     <tr>
                         <td>{{ $task->name }}</td>
                         <td>
-                            <form method="POST" action="/tasks/{{ $task->id }}">
+                            <form method="POST" action="/delete/{{ $task->id }}" style="display:inline;">
                                 @csrf
-                                @method('DELETE')
                                 <button class="btn-delete" type="submit">Delete</button>
+                            </form>
+
+                            <form method="POST" action="/edit/{{ $task->id }}" style="display:inline;">
+                                @csrf
+                                <button class="btn-add" type="submit">Edit</button>
                             </form>
                         </td>
                     </tr>
